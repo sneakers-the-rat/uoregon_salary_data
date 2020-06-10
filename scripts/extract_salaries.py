@@ -9,11 +9,19 @@ import multiprocessing as mp
 from pprint import pprint
 
 def clean_salary(path, tqdm_position=1):
-    global read_type
+    # global read_type
 
     # get date and filename
     dirname, fname = os.path.split(path)
     out_fn = os.path.splitext(path)[0] + '.csv'
+
+    if 'unclassified' in path.lower():
+        read_type = 'unclassified'
+    elif 'classified' in path.lower():
+        read_type = 'classified'
+    else:
+        Warning(f'{path} doesnt look like a salary file! aborting.')
+        return
 
     # get number of pages in pdf
     file = PyPDF2.PdfFileReader(path)
@@ -114,19 +122,16 @@ def clean_salary(path, tqdm_position=1):
 
 if __name__ == "__main__":
 
-    base_dir = '/path/to/your/pdfs'
-
-    # different types of pdfs have slightly different page boundaries
-    global read_type
-    read_type="Unclassified"
+    base_dir = '../unprocessed'
 
     # do this as w/ multiple processes
     do_multi = True
 
     # find relevant pdfs and csvs
     files = os.listdir(base_dir)
-    csv_files = [f for f in files if f.startswith(read_type) and f.endswith('.csv')]
-    files = [f for f in files if f.startswith(read_type) and f.endswith('.pdf')]
+    csv_files = [f for f in files if f.endswith('.csv')]
+    files = [f for f in files if f.endswith('.pdf')]
+
 
     csv_stems = [os.path.splitext(f)[0] for f in csv_files]
 

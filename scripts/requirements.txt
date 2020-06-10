@@ -1,0 +1,5 @@
+camelot-py[cv]
+numpy
+pandas
+tqdm
+PyPDF2
