@@ -38,8 +38,6 @@ def clean_salary(path, tqdm_position=1):
     except:
         pass
 
-
-
     # iterate through pages and 
     for page in tqdm(range(2,n_pages), position=tqdm_position):
         try:
